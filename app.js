@@ -1,4 +1,5 @@
 const STORAGE_KEY = "quiz-web-progress-v1";
+const QUIZ_SOURCE = "./quiz_combined.json";
 
 const state = {
   quizzes: [],
@@ -184,10 +185,10 @@ function resetQuiz() {
 
 async function init() {
   try {
-    const response = await fetch("./quiz.json", { cache: "no-store" });
+    const response = await fetch(QUIZ_SOURCE, { cache: "no-store" });
 
     if (!response.ok) {
-      throw new Error("quiz.json load failed");
+      throw new Error("quiz source load failed");
     }
 
     state.quizzes = await response.json();
