@@ -3,7 +3,8 @@ const STORAGE_KEY = "quiz-web-progress-v1";
 const state = {
   quizzes: [],
   currentIndex: 0,
-  answers: []
+  answers: [],
+  order: []
 };
 
 const screenEls = {
@@ -33,7 +34,8 @@ function showScreen(name) {
 function saveProgress() {
   const payload = {
     currentIndex: state.currentIndex,
-    answers: state.answers
+    answers: state.answers,
+    order: state.order
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
@@ -67,8 +69,24 @@ function updateIntro() {
   startBtnEl.textContent = hasResume ? "이어 풀기" : "시작하기";
 }
 
+function shuffleArray(items) {
+  const next = [...items];
+
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+
+  return next;
+}
+
+function getCurrentQuiz() {
+  const quizIndex = state.order[state.currentIndex];
+  return state.quizzes[quizIndex];
+}
+
 function renderQuestion() {
-  const quiz = state.quizzes[state.currentIndex];
+  const quiz = getCurrentQuiz();
   const selected = state.answers[state.currentIndex] ?? null;
   const progress = ((state.currentIndex + 1) / state.quizzes.length) * 100;
 
@@ -83,15 +101,23 @@ function renderQuestion() {
     button.className = "option-btn";
     button.innerHTML = `<strong>${key.toUpperCase()}.</strong> ${value}`;
 
-    if (selected === key) {
-      button.classList.add("selected");
-    }
+    if (selected !== null) {
+      button.disabled = true;
 
-    button.addEventListener("click", () => {
-      state.answers[state.currentIndex] = key;
-      saveProgress();
-      renderQuestion();
-    });
+      if (key === quiz.answer) {
+        button.classList.add("correct");
+      }
+
+      if (selected === key && selected !== quiz.answer) {
+        button.classList.add("incorrect");
+      }
+    } else {
+      button.addEventListener("click", () => {
+        state.answers[state.currentIndex] = key;
+        saveProgress();
+        renderQuestion();
+      });
+    }
 
     optionsContainerEl.appendChild(button);
   });
@@ -103,7 +129,8 @@ function renderQuestion() {
 function calculateAccuracy() {
   let correct = 0;
 
-  state.quizzes.forEach((quiz, index) => {
+  state.order.forEach((quizIndex, index) => {
+    const quiz = state.quizzes[quizIndex];
     if (state.answers[index] === quiz.answer) {
       correct += 1;
     }
@@ -122,11 +149,21 @@ function renderResult() {
 function startQuiz() {
   const saved = loadProgress();
 
-  if (saved && Array.isArray(saved.answers)) {
+  if (
+    saved &&
+    Array.isArray(saved.answers) &&
+    Array.isArray(saved.order) &&
+    saved.order.length === state.quizzes.length
+  ) {
     state.answers = saved.answers.slice(0, state.quizzes.length);
+    while (state.answers.length < state.quizzes.length) {
+      state.answers.push(null);
+    }
+    state.order = saved.order.slice(0, state.quizzes.length);
     state.currentIndex = Math.min(saved.currentIndex ?? 0, state.quizzes.length - 1);
   } else {
     state.answers = new Array(state.quizzes.length).fill(null);
+    state.order = shuffleArray(state.quizzes.map((_, index) => index));
     state.currentIndex = 0;
     saveProgress();
   }
@@ -138,6 +175,7 @@ function startQuiz() {
 function resetQuiz() {
   state.currentIndex = 0;
   state.answers = new Array(state.quizzes.length).fill(null);
+  state.order = shuffleArray(state.quizzes.map((_, index) => index));
   clearProgress();
   saveProgress();
   renderQuestion();
@@ -182,6 +220,9 @@ nextBtnEl.addEventListener("click", () => {
 
 restartBtnEl.addEventListener("click", () => {
   clearProgress();
+  state.currentIndex = 0;
+  state.answers = new Array(state.quizzes.length).fill(null);
+  state.order = [];
   updateIntro();
   showScreen("intro");
 });

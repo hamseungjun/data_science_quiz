@@ -199,6 +199,11 @@ h2 {
   cursor: pointer;
 }
 
+.option-btn:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
 .option-btn strong {
   display: inline-block;
   min-width: 28px;
@@ -206,9 +211,24 @@ h2 {
   color: var(--accent);
 }
 
-.option-btn.selected {
-  background: var(--option-selected);
-  border-color: var(--accent);
+.option-btn.correct {
+  background: #e9f9ef;
+  border-color: #209255;
+  color: #14532d;
+}
+
+.option-btn.correct strong {
+  color: #209255;
+}
+
+.option-btn.incorrect {
+  background: #fdecec;
+  border-color: #d64545;
+  color: #7f1d1d;
+}
+
+.option-btn.incorrect strong {
+  color: #d64545;
 }
 
 .actions {
