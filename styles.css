@@ -39,11 +39,11 @@ button {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 20px;
+  padding: 16px;
 }
 
 .card {
-  width: min(100%, 1180px);
+  width: min(1180px, calc(100vw - 32px));
   min-height: 720px;
   background: var(--card);
   border: 1px solid var(--card-border);
@@ -55,13 +55,16 @@ button {
 
 .app-layout {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 248px minmax(0, 1fr);
 }
 
 .sidebar {
   background: var(--sidebar);
   border-right: 1px solid rgba(65, 67, 76, 0.08);
   padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .sidebar-copy {
@@ -72,18 +75,22 @@ button {
 
 .week-nav {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .week-btn {
   width: 100%;
-  padding: 16px;
+  padding: 14px 16px;
   text-align: left;
   background: #ffffff;
   border: 1px solid var(--option-border);
-  border-radius: var(--radius-md);
+  border-radius: 16px;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .week-btn:hover {
@@ -95,29 +102,26 @@ button {
   border-color: var(--accent);
 }
 
-.week-btn-title,
-.week-btn-meta {
-  display: block;
-}
-
 .week-btn-title {
   font-weight: 800;
-  margin-bottom: 6px;
 }
 
 .week-btn-meta {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--muted);
+  flex: 0 0 auto;
 }
 
 .content {
   min-width: 0;
+  overflow: hidden;
 }
 
 .screen {
   display: none;
   min-height: 720px;
   padding: 34px;
+  min-width: 0;
 }
 
 .screen.active {
@@ -149,7 +153,7 @@ h2 {
 
 .meta-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
   margin-bottom: 28px;
 }
@@ -310,7 +314,7 @@ h2 {
   color: var(--accent-dark);
 }
 
-@media (max-width: 920px) {
+@media (max-width: 1280px) {
   .app-layout {
     grid-template-columns: 1fr;
   }
@@ -318,9 +322,20 @@ h2 {
   .sidebar {
     border-right: 0;
     border-bottom: 1px solid rgba(65, 67, 76, 0.08);
-    padding-bottom: 18px;
+    padding-bottom: 16px;
   }
 
+  .week-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .screen {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 920px) {
   .week-nav {
     grid-template-columns: repeat(6, minmax(140px, 1fr));
     overflow-x: auto;
@@ -396,33 +411,24 @@ h2 {
   }
 
   .week-nav {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin: 0 -2px;
-    padding: 2px;
-    scrollbar-width: none;
-  }
-
-  .week-nav::-webkit-scrollbar {
-    display: none;
+    margin: 0;
+    padding: 0;
   }
 
   .week-btn {
-    flex: 0 0 auto;
-    min-width: auto;
-    padding: 10px 12px;
-    border-radius: 999px;
+    min-width: 0;
+    padding: 11px 12px;
+    border-radius: 14px;
   }
 
   .week-btn-title {
-    margin-bottom: 0;
     font-size: 0.94rem;
   }
 
   .week-btn-meta {
-    display: none;
+    font-size: 0.78rem;
   }
 
   .meta-grid {
@@ -468,12 +474,6 @@ h2 {
     margin: 10px 0 14px;
     font-size: 0.9rem;
     line-height: 1.5;
-  }
-
-  #intro-screen .meta-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
   }
 
   #intro-screen .meta-box {

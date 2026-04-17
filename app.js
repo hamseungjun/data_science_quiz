@@ -21,7 +21,6 @@ const weekNavEl = document.getElementById("week-nav");
 const introTitleEl = document.getElementById("intro-title");
 const selectedWeekLabelEl = document.getElementById("selected-week-label");
 const totalCountEl = document.getElementById("total-count");
-const weekRangeEl = document.getElementById("week-range");
 const resumeStateEl = document.getElementById("resume-state");
 const progressTextEl = document.getElementById("progress-text");
 const progressFillEl = document.getElementById("progress-fill");
@@ -141,7 +140,7 @@ function renderWeekNav() {
 
     button.innerHTML = `
       <span class="week-btn-title">${week.label}</span>
-      <span class="week-btn-meta">${week.quizzes.length}문항 · ${answeredCount}개 진행</span>
+      <span class="week-btn-meta">${answeredCount}/${week.quizzes.length}</span>
     `;
 
     button.addEventListener("click", () => {
@@ -159,7 +158,6 @@ function updateIntro() {
     introTitleEl.textContent = "주차를 선택해 주세요";
     selectedWeekLabelEl.textContent = "-";
     totalCountEl.textContent = "-";
-    weekRangeEl.textContent = "-";
     resumeStateEl.textContent = "주차 선택 필요";
     startBtnEl.textContent = "시작하기";
     startBtnEl.disabled = true;
@@ -175,7 +173,6 @@ function updateIntro() {
   introTitleEl.textContent = `${week.label} 퀴즈`;
   selectedWeekLabelEl.textContent = week.label;
   totalCountEl.textContent = String(week.quizzes.length);
-  weekRangeEl.textContent = week.rangeLabel;
   resumeStateEl.textContent = hasResume ? `${answeredCount}개까지 풀이` : "새로 시작";
   startBtnEl.textContent = hasResume ? "이어 풀기" : "시작하기";
   startBtnEl.disabled = false;
