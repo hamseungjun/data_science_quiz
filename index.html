@@ -3,60 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz Web</title>
+  <title>Data Science Quiz</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="app-shell">
-    <section class="card" id="screen">
-      <div class="screen active" id="intro-screen">
-        <p class="eyebrow">Portable Quiz</p>
-        <h1>데이터 사이언스 퀴즈</h1>
-        <p class="lead">
-          한 문제씩 풀고 마지막에 accuracy만 확인하는 아주 단순한 퀴즈 앱입니다.
-        </p>
-        <div class="meta-grid">
-          <div class="meta-box">
-            <span class="meta-label">문항 수</span>
-            <strong id="total-count">-</strong>
-          </div>
-          <div class="meta-box">
-            <span class="meta-label">진행 저장</span>
-            <strong id="resume-state">불러오는 중</strong>
-          </div>
-        </div>
-        <button class="primary-btn" id="start-btn" type="button">시작하기</button>
-      </div>
-
-      <div class="screen" id="quiz-screen">
-        <header class="quiz-header">
-          <div>
-            <p class="eyebrow">Question</p>
-            <p class="progress-text" id="progress-text">1 / 40</p>
-          </div>
-          <button class="ghost-btn" id="reset-btn" type="button">처음부터</button>
-        </header>
-
-        <div class="progress-track" aria-hidden="true">
-          <div class="progress-fill" id="progress-fill"></div>
+    <section class="card app-layout">
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <p class="eyebrow">Weekly Quiz</p>
+          <h1>데이터 사이언스 퀴즈</h1>
+          <p class="sidebar-copy">주차를 고르고 그 주차 문제만 풀면 됩니다.</p>
         </div>
 
-        <article class="question-block">
-          <h2 id="question-text"></h2>
-          <div class="options" id="options-container"></div>
-        </article>
+        <nav class="week-nav" id="week-nav"></nav>
+      </aside>
 
-        <div class="actions">
-          <button class="primary-btn" id="next-btn" type="button" disabled>다음</button>
+      <section class="content">
+        <div class="screen active" id="intro-screen">
+          <p class="eyebrow">Portable Quiz</p>
+          <h2 id="intro-title">주차를 선택해 주세요</h2>
+          <p class="lead" id="intro-description">
+            왼쪽 목록에서 1주차부터 6주차 중 하나를 선택하면, 해당 문제만 셔플해서 풀 수 있습니다.
+          </p>
+          <div class="meta-grid">
+            <div class="meta-box">
+              <span class="meta-label">선택한 주차</span>
+              <strong id="selected-week-label">-</strong>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">문항 수</span>
+              <strong id="total-count">-</strong>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">범위</span>
+              <strong id="week-range">-</strong>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">진행 상태</span>
+              <strong id="resume-state">주차 선택 필요</strong>
+            </div>
+          </div>
+          <button class="primary-btn" id="start-btn" type="button" disabled>시작하기</button>
         </div>
-      </div>
 
-      <div class="screen" id="result-screen">
-        <p class="eyebrow">Finished</p>
-        <h2>최종 Accuracy</h2>
-        <p class="accuracy-value" id="accuracy-value">0%</p>
-        <button class="primary-btn" id="restart-btn" type="button">다시 풀기</button>
-      </div>
+        <div class="screen" id="quiz-screen">
+          <header class="quiz-header">
+            <div>
+              <p class="eyebrow" id="quiz-week-label">Week 1</p>
+              <p class="progress-text" id="progress-text">1 / 40</p>
+            </div>
+            <button class="ghost-btn" id="reset-btn" type="button">이 주차 다시 섞기</button>
+          </header>
+
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <article class="question-block">
+            <h2 id="question-text"></h2>
+            <div class="options" id="options-container"></div>
+          </article>
+
+          <div class="actions">
+            <button class="primary-btn" id="next-btn" type="button" disabled>다음</button>
+          </div>
+        </div>
+
+        <div class="screen" id="result-screen">
+          <p class="eyebrow" id="result-week-label">Finished</p>
+          <h2>최종 Accuracy</h2>
+          <p class="accuracy-value" id="accuracy-value">0%</p>
+          <button class="primary-btn" id="restart-btn" type="button">다른 주차 고르기</button>
+        </div>
+      </section>
     </section>
   </main>
 
